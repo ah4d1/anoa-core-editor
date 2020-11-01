@@ -11,12 +11,17 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="1">
+    <Files Count="2">
       <Item1>
         <Filename Value="ace_synedit.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ace_synedit"/>
       </Item1>
+      <Item2>
+        <Filename Value="ace_synhighlighter.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ace_synhighlighter"/>
+      </Item2>
     </Files>
     <RequiredPkgs Count="4">
       <Item1>
