@@ -8,13 +8,14 @@ unit pkg_anoacoreeditor;
 interface
 
 uses
-  ace_synedit, LazarusPackageIntf;
+  ace_synedit, ace_synhighlighter, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
   RegisterUnit('ace_synedit', @ace_synedit.Register);
+  RegisterUnit('ace_synhighlighter', @ace_synhighlighter.Register);
 end;
 
 initialization
