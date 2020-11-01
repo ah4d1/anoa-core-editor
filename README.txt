@@ -13,7 +13,8 @@ Source Code : https://github.com/ah4d1/anoa-core-editor
 
 DEPENDENCIES :
 -------------------------------------
--
+- SynEdit Package.
+- AnoaCore Package, see https://github.com/ah4d1/anoa-core
 
 
 DISCLAIMER :
