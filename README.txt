@@ -13,7 +13,10 @@ Source Code : https://github.com/ah4d1/anoa-core-editor
 
 DEPENDENCIES :
 -------------------------------------
+- FCL Package.
+- LCLBase Package.
 - SynEdit Package.
+- ExtraHighlighters Package, see ExtraSyn at https://github.com/mriscoc/extrasyn
 - AnoaCore Package, see https://github.com/ah4d1/anoa-core
 
 
