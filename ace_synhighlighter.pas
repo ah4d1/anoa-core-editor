@@ -14,8 +14,8 @@ uses
   SynHighlighterSQL;
 
 type
-  TAceShLang = (aceShLangNone,aceShLangCobol,aceShLangCS,aceShLangCSS,aceShLangHTML,aceShLangJava,
-    aceShLangJSON,aceShLangPas,aceShLangPHP,aceShLangPython,aceShLangSQL
+  TAceShLang = (aceShLangNone,aceShLangCobol,aceShLangCSharp,aceShLangCSS,aceShLangHTML,aceShLangJava,
+    aceShLangJSON,aceShLangPascal,aceShLangPHP,aceShLangPython,aceShLangSQL
   );
   TAceCustomSynHighlighter = class(TComponent)
   private
@@ -26,17 +26,15 @@ type
     {Highlighter}
     FNone   : TSynCustomHighLighter;
     FCobol  : TSynCobolSyn;
-    FCS     : TSynCSSyn;
+    FCSharp : TSynCSSyn;
     FCSS    : TSynCSSSyn;
     FHTML   : TSynHTMLSyn;
     FJava   : TSynJavaSyn;
     FJSON   : TSynJSONSyn;
-    FPas    : TSynPasSyn;
+    FPascal : TSynPasSyn;
     FPHP    : TSynPHPSyn;
     FPython : TSynPythonSyn;
     FSQL    : TSynSQLSyn;
-    {Default Filter}
-    FDefaultFilter : WideString;
     {Ext}
     FExt : string;
     {Highlighter}
@@ -59,12 +57,12 @@ type
     {Highlighter}
     property vNone : TSynCustomHighLighter read FNone write FNone;
     property vCobol : TSynCobolSyn read FCobol write FCobol;
-    property vCS : TSynCSSyn read FCS write FCS;
+    property vCSharp : TSynCSSyn read FCSharp write FCSharp;
     property vCSS : TSynCSSSyn read FCSS write FCSS;
     property vHTML : TSynHTMLSyn read FHTML write FHTML;
     property vJava : TSynJavaSyn read FJava write FJava;
     property vJSON : TSynJSONSyn read FJSON write FJSON;
-    property vPas : TSynPasSyn read FPas write FPas;
+    property vPascal : TSynPasSyn read FPascal write FPascal;
     property vPHP : TSynPHPSyn read FPHP write FPHP;
     property vPython : TSynPythonSyn read FPython write FPython;
     property vSQL : TSynSQLSyn read FSQL write FSQL;
@@ -100,24 +98,24 @@ begin
   Self.FKeyAttriColor := clBlue;
   {Highlighter}
   Self.FNone   := nil;
-  Self.FCobol  := TSynCobolSyn.Create(AOwner);
-  Self.FCS     := TSynCSSyn.Create(AOwner);
-  Self.FCSS    := TSynCSSSyn.Create(AOwner);
-  Self.FHTML   := TSynHTMLSyn.Create(AOwner);
-  Self.FJava   := TSynJavaSyn.Create(AOwner);
-  Self.FJSON   := TSynJSONSyn.Create(AOwner);
-  Self.FPas    := TSynPasSyn.Create(AOwner);
-  Self.FPHP    := TSynPHPSyn.Create(AOwner);
-  Self.FPython := TSynPythonSyn.Create(AOwner);
-  Self.FSQL    := TSynSQLSyn.Create(AOwner);
+  Self.FCobol  := TSynCobolSyn.Create(Self);
+  Self.FCSharp := TSynCSSyn.Create(Self);
+  Self.FCSS    := TSynCSSSyn.Create(Self);
+  Self.FHTML   := TSynHTMLSyn.Create(Self);
+  Self.FJava   := TSynJavaSyn.Create(Self);
+  Self.FJSON   := TSynJSONSyn.Create(Self);
+  Self.FPascal := TSynPasSyn.Create(Self);
+  Self.FPHP    := TSynPHPSyn.Create(Self);
+  Self.FPython := TSynPythonSyn.Create(Self);
+  Self.FSQL    := TSynSQLSyn.Create(Self);
   {Set Color}
   Self.fcSetColor(Self.FCobol);
-  Self.fcSetColor(Self.FCS);
+  Self.fcSetColor(Self.FCSharp);
   Self.fcSetColor(Self.FCSS);
   Self.fcSetColor(Self.FHTML);
   Self.fcSetColor(Self.FJava);
   Self.fcSetColor(Self.FJSON,False);
-  Self.fcSetColor(Self.FPas);
+  Self.fcSetColor(Self.FPascal);
   Self.fcSetColor(Self.FPHP);
   Self.fcSetColor(Self.FPython);
   Self.fcSetColor(Self.FSQL);
@@ -134,12 +132,12 @@ begin
   case Self.FLang of
     aceShLangNone   : Self.FHighlighter := Self.FNone;
     aceShLangCobol  : Self.FHighlighter := Self.FCobol;
-    aceShLangCS     : Self.FHighlighter := Self.FCS;
+    aceShLangCSharp : Self.FHighlighter := Self.FCSharp;
     aceShLangCSS    : Self.FHighlighter := Self.FCSS;
     aceShLangHTML   : Self.FHighlighter := Self.FHTML;
     aceShLangJava   : Self.FHighlighter := Self.FJava;
     aceShLangJSON   : Self.FHighlighter := Self.FJSON;
-    aceShLangPas    : Self.FHighlighter := Self.FPas;
+    aceShLangPascal : Self.FHighlighter := Self.FPascal;
     aceShLangPHP    : Self.FHighlighter := Self.FPHP;
     aceShLangPython : Self.FHighlighter := Self.FPython;
     aceShLangSQL    : Self.FHighlighter := Self.FSQL;
@@ -151,12 +149,12 @@ begin
   Result := ''
     + 'All Files (*.*)|*.*'
     + '|' + Self.FCobol.DefaultFilter
-    + '|' + Self.FCS.DefaultFilter
+    + '|' + Self.FCSharp.DefaultFilter
     + '|' + Self.FCSS.DefaultFilter
     + '|' + Self.FHTML.DefaultFilter
     + '|' + Self.FJava.DefaultFilter
     + '|' + Self.FJSOn.DefaultFilter
-    + '|' + Self.FPas.DefaultFilter
+    + '|' + Self.FPascal.DefaultFilter
     + '|' + Self.FPHP.DefaultFilter
     + '|' + Self.FPython.DefaultFilter
     + '|' + Self.FSQL.DefaultFilter
@@ -174,12 +172,12 @@ var
 begin
   LLang := aceShLangNone;
   if vacFileDir.fcIsExt(AValue,Self.FCobol.DefaultFilter) then LLang := aceShLangCobol
-    else if vacFileDir.fcIsExt(AValue,Self.FCS.DefaultFilter) then LLang := aceShLangCS
+    else if vacFileDir.fcIsExt(AValue,Self.FCSharp.DefaultFilter) then LLang := aceShLangCSharp
     else if vacFileDir.fcIsExt(AValue,Self.FCSS.DefaultFilter) then LLang := aceShLangCSS
     else if vacFileDir.fcIsExt(AValue,Self.FHTML.DefaultFilter) then LLang := aceShLangHTML
     else if vacFileDir.fcIsExt(AValue,Self.FJava.DefaultFilter) then LLang := aceShLangJava
     else if vacFileDir.fcIsExt(AValue,Self.FJSON.DefaultFilter) then LLang := aceShLangJSON
-    else if vacFileDir.fcIsExt(AValue,Self.FPas.DefaultFilter) then LLang := aceShLangPas
+    else if vacFileDir.fcIsExt(AValue,Self.FPascal.DefaultFilter) then LLang := aceShLangPascal
     else if vacFileDir.fcIsExt(AValue,Self.FPHP.DefaultFilter) then LLang := aceShLangPHP
     else if vacFileDir.fcIsExt(AValue,Self.FPython.DefaultFilter) then LLang := aceShLangPython
     else if vacFileDir.fcIsExt(AValue,Self.FSQL.DefaultFilter) then LLang := aceShLangSQL
