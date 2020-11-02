@@ -8,7 +8,7 @@ unit ace_synedit;
 interface
 
 uses
-  Classes, SysUtils, SynEdit, Graphics;
+  Classes, SysUtils, SynEdit, Graphics, ace_synhighlighter;
 
 type
   TAceSeTheme = (aceSeThemeNormal,aceSeThemeDark);
@@ -21,13 +21,16 @@ type
     FLineHighlightColor : TColor;
     FCommentAttriColor : TColor;
     FKeyAttriColor : TColor;
+    FSynHighlighter : TAceSynHighlighter;
     FTheme : TAceSeTheme;
+    procedure SetSynHighlighter (AValue : TAceSynHighlighter);
     function GetTheme : TAceSeTheme;
     procedure SetTheme (AValue : TAceSeTheme);
     procedure _DefaultColor;
     procedure _ThemeNormal;
     procedure _ThemeDark;
   public
+    property vSynHighlighter : TAceSynHighlighter read FSynHighlighter write SetSynHighlighter;
     property vTheme : TAceSeTheme read GetTheme write SetTheme default aceSeThemeNormal;
     constructor Create (AOwner: TComponent); override;
     procedure fcUndo;
@@ -39,6 +42,7 @@ type
   end;
   TAceSynEdit = class(TAceCustomSynEdit)
   published
+    property vSynHighlighter;
     property vTheme;
   end;
 
@@ -57,37 +61,16 @@ end;
 constructor TAceCustomSynEdit.Create (AOwner : TComponent);
 begin
   inherited Create(AOwner);
+  Self.Font.Name := 'Courier New';
+  Self.Font.Quality := fqProof;
+  Self.Font.Size := 9;
   Self._DefaultColor;
 end;
 
-procedure TAceCustomSynEdit.fcUndo;
+procedure TAceCustomSynEdit.SetSynHighlighter (AValue : TAceSynHighlighter);
 begin
-  Self.Undo;
-end;
-
-procedure TAceCustomSynEdit.fcRedo;
-begin
-  Self.Redo;
-end;
-
-procedure TAceCustomSynEdit.fcCopy;
-begin
-  Self.CopyToClipboard;
-end;
-
-procedure TAceCustomSynEdit.fcCut;
-begin
-  Self.CutToClipboard;
-end;
-
-procedure TAceCustomSynEdit.fcPaste;
-begin
-  Self.PasteFromClipboard;
-end;
-
-procedure TAceCustomSynEdit.fcSelectAll;
-begin
-  Self.SelectAll;
+  Self.FSynHighlighter := AValue;
+  // Self.Highlighter := Self.FSynHighlighter.vHighlighter;
 end;
 
 function TAceCustomSynEdit.GetTheme : TAceSeTheme;
@@ -136,6 +119,36 @@ begin
   Self.LineHighlightColor.Background := vacColor.fcInvert(Self.FLineHighlightColor);
   Self.FCommentAttriColor := vacColor.fcInvert(Self.FCommentAttriColor);
   Self.FKeyAttriColor := vacColor.fcInvert(Self.FKeyAttriColor);
+end;
+
+procedure TAceCustomSynEdit.fcUndo;
+begin
+  Self.Undo;
+end;
+
+procedure TAceCustomSynEdit.fcRedo;
+begin
+  Self.Redo;
+end;
+
+procedure TAceCustomSynEdit.fcCopy;
+begin
+  Self.CopyToClipboard;
+end;
+
+procedure TAceCustomSynEdit.fcCut;
+begin
+  Self.CutToClipboard;
+end;
+
+procedure TAceCustomSynEdit.fcPaste;
+begin
+  Self.PasteFromClipboard;
+end;
+
+procedure TAceCustomSynEdit.fcSelectAll;
+begin
+  Self.SelectAll;
 end;
 
 end.
