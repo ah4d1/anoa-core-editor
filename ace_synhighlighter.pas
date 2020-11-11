@@ -20,6 +20,8 @@ type
   TAceCustomSynHighlighter = class(TComponent)
   private
     FLang : TAceShLang;
+    FLangTxt : WideString;
+    FLangResWordFile : WideString;
     {Attribute Colors}
     FCommentAttriColor : TColor;
     FKeyAttriColor : TColor;
@@ -68,6 +70,8 @@ type
     property vSQL : TSynSQLSyn read FSQL write FSQL;
     {}
     property vLang : TAceShLang read GetLang write SetLang default aceShLangNone;
+    property vLangTxt : WideString read FLangTxt write FLangTxt;
+    property vLangResWordFile : WideString read FLangResWordFile write FLangResWordFile;
     property vDefaultFilter : WideString read GetDefaultFilter;
     property vExt : string read GetExt write SetExt;
     property vHighlighter : TSynCustomHighlighter read FHighlighter;
@@ -108,6 +112,9 @@ begin
   Self.FPHP    := TSynPHPSyn.Create(Self);
   Self.FPython := TSynPythonSyn.Create(Self);
   Self.FSQL    := TSynSQLSyn.Create(Self);
+  {Lang}
+  Self.vLangTxt := '|COBOL|C#|CSS|HTML|Java|JSON|Pascal|PHP|Python|SQL';
+  Self.vLangResWordFile := 'none|cobol|cs|css|html|java|json|pascal|php|python|sql';
   {Set Color}
   Self.fcSetColor(Self.FCobol);
   Self.fcSetColor(Self.FCSharp);
