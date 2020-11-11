@@ -80,6 +80,7 @@ type
     property vExt : string read GetExt write SetExt;
     property vHighlighter : TSynCustomHighlighter read FHighlighter;
     constructor Create (AOwner: TComponent); override;
+    procedure fcReserveWords (ADir : string);
   end;
   TAceSynHighlighter = class(TAceCustomSynHighlighter)
   published
@@ -91,7 +92,7 @@ procedure Register;
 implementation
 
 uses
-  ac_filedir, ac_string;
+  ac_filedir, ac_string, ac_stringlist;
 
 procedure Register;
 begin
@@ -154,6 +155,22 @@ begin
     aceShLangPHP    : Self.FHighlighter := Self.FPHP;
     aceShLangPython : Self.FHighlighter := Self.FPython;
     aceShLangSQL    : Self.FHighlighter := Self.FSQL;
+  end;
+end;
+
+procedure TAceCustomSynHighlighter.fcReserveWords (ADir : string);
+var
+  i : Integer;
+  LLangs : TStringList;
+  LResWordList : TStringList;
+  LResWord : WideString;
+begin
+  LLangs := Self.vLangs;
+  for i := 0 to LLangs.Count - 1 do
+  begin
+    LResWordList := vacFileDir.fcFileToStringList(ADir + LLangs[i] + '.rw');
+    LResWord := vacStringList.fcToDelimited(LResWordList,'|');
+    Self.vReservedWords.Add(string(LResWord));
   end;
 end;
 
