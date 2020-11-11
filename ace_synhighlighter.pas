@@ -22,6 +22,8 @@ type
     FLang : TAceShLang;
     FLangTxt : WideString;
     FLangResWordFile : WideString;
+    FLangs : TStringList;
+    FReservedWords : TStringList;
     {Attribute Colors}
     FCommentAttriColor : TColor;
     FKeyAttriColor : TColor;
@@ -71,7 +73,9 @@ type
     {}
     property vLang : TAceShLang read GetLang write SetLang default aceShLangNone;
     property vLangTxt : WideString read FLangTxt write FLangTxt;
+    property vLangs : TStringList read FLangs write FLangs;
     property vLangResWordFile : WideString read FLangResWordFile write FLangResWordFile;
+    property vReservedWords : TStringList read FReservedWords write FReservedWords;
     property vDefaultFilter : WideString read GetDefaultFilter;
     property vExt : string read GetExt write SetExt;
     property vHighlighter : TSynCustomHighlighter read FHighlighter;
@@ -87,7 +91,7 @@ procedure Register;
 implementation
 
 uses
-  ac_filedir;
+  ac_filedir, ac_string;
 
 procedure Register;
 begin
@@ -115,6 +119,8 @@ begin
   {Lang}
   Self.vLangTxt := '|COBOL|C#|CSS|HTML|Java|JSON|Pascal|PHP|Python|SQL';
   Self.vLangResWordFile := 'none|cobol|cs|css|html|java|json|pascal|php|python|sql';
+  Self.vLangs := vacString.fcSplit(string(Self.vLangResWordFile),Char('|'));
+  Self.vReservedWords := TStringList.Create;
   {Set Color}
   Self.fcSetColor(Self.FCobol);
   Self.fcSetColor(Self.FCSharp);
