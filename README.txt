@@ -20,6 +20,12 @@ DEPENDENCIES :
 - AnoaCore Package, see https://github.com/ah4d1/anoa-core
 
 
+USER MANUAL :
+-------------------------------------
+- Copy and paste "resword" directory to your prefered location.
+- And then set "Reserved Words" list by passing your "resword" directory to "fcReserveWords" procedure.
+
+
 DISCLAIMER :
 -------------------------------------
 The name "Anoa" came from the name of the species endemic to the island of Sulawesi in Indonesia.
