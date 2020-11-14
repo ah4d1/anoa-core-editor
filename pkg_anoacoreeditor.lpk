@@ -8,10 +8,11 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
+        <OtherUnitFiles Value="synfacilsyn"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="2">
+    <Files Count="3">
       <Item1>
         <Filename Value="ace_synedit.pas"/>
         <HasRegisterProc Value="True"/>
@@ -22,6 +23,10 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="ace_synhighlighter"/>
       </Item2>
+      <Item3>
+        <Filename Value="synfacilsyn\SynFacilHighlighter.pas"/>
+        <UnitName Value="SynFacilHighlighter"/>
+      </Item3>
     </Files>
     <RequiredPkgs Count="5">
       <Item1>
