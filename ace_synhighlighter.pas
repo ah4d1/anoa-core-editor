@@ -8,16 +8,16 @@ unit ace_synhighlighter;
 interface
 
 uses
-  Classes, SysUtils, SynEdit, Graphics, SynEditHighlighter, SynHighlighterBat,
-  SynHighlighterCobol, SynHighlighterCS, SynHighlighterCSS, SynHighlighterHTML,
-  SynHighlighterIni, SynHighlighterJava, SynHighlighterJScript, SynHighlighterJSON,
-  SynHighlighterPas, SynHighlighterPHP, SynHighlighterPython, SynHighlighterRuby,
-  SynHighlighterSQL, SynHighlighterXML;
+  Classes, SysUtils, SynEdit, Graphics, Dialogs, SynEditHighlighter, SynFacilHighlighter,
+  SynHighlighterBat, SynHighlighterCobol, SynHighlighterCS, SynHighlighterCSS,
+  SynHighlighterHTML, SynHighlighterIni, SynHighlighterJava, SynHighlighterJScript,
+  SynHighlighterJSON, SynHighlighterPas, SynHighlighterPHP, SynHighlighterPython,
+  SynHighlighterRuby, SynHighlighterSQL, SynHighlighterXML;
 
 type
   TAceShLang = (aceShLangNone,aceShLangBatch,aceShLangCobol,aceShLangCSharp,aceShLangCSS,
     aceShLangHTML,aceShLangIni,aceShLangJava,aceShLangJavaScript,aceShLangJSON,aceShLangPascal,
-    aceShLangPHP,aceShLangPython,aceShLangRuby,aceShLangSQL,aceShLangXML
+    aceShLangPHP,aceShLangPython,aceShLangR,aceShLangRuby,aceShLangSQL,aceShLangXML
   );
   TAceCustomSynHighlighter = class(TComponent)
   private
@@ -26,6 +26,7 @@ type
     FLangResWordFile : WideString;
     FLangs : TStringList;
     FReservedWords : TStringList;
+    FAddOnHLDir : string; {for TSynFacilSyn}
     {Attribute Colors}
     FCommentAttriColor : TColor;
     FKeyAttriColor : TColor;
@@ -43,6 +44,7 @@ type
     FPascal : TSynPasSyn;
     FPHP    : TSynPHPSyn;
     FPython : TSynPythonSyn;
+    FR      : TSynFacilSyn;
     FRuby   : TSynRubySyn;
     FSQL    : TSynSQLSyn;
     FXML    : TSynXMLSyn;
@@ -61,7 +63,10 @@ type
     {Set Color}
     procedure fcSetColor (ALang : TSynCustomHighlighter);
     procedure fcSetColor (ALang : TSynCustomHighlighter; AComment : Boolean);
+    procedure fcSetColorFacil (ALang : TSynFacilSyn);
+    procedure fcReserveWords (ADir : string);
   public
+    property vAddOnHLDir : string read FAddOnHLDir write FAddOnHLDir;
     {Attribute Colors}
     property vCommentAttriColor : TColor read FCommentAttriColor write FCommentAttriColor;
     property vKeyAttriColor : TColor read FKeyAttriColor write FKeyAttriColor;
@@ -79,6 +84,7 @@ type
     property vPascal : TSynPasSyn read FPascal write FPascal;
     property vPHP : TSynPHPSyn read FPHP write FPHP;
     property vPython : TSynPythonSyn read FPython write FPython;
+    property vR : TSynFacilSyn read FR write FR;
     property vRuby : TSynRubySyn read FRuby write FRuby;
     property vSQL : TSynSQLSyn read FSQL write FSQL;
     property vXML : TSynXMLSyn read FXML write FXML;
@@ -92,7 +98,7 @@ type
     property vExt : string read GetExt write SetExt;
     property vHighlighter : TSynCustomHighlighter read FHighlighter;
     constructor Create (AOwner: TComponent); override;
-    procedure fcReserveWords (ADir : string);
+    procedure fcInit (AResWordDir : string);
   end;
   TAceSynHighlighter = class(TAceCustomSynHighlighter)
   published
@@ -114,6 +120,7 @@ end;
 constructor TAceCustomSynHighlighter.Create (AOwner : TComponent);
 begin
   inherited Create(AOwner);
+  Self.FAddOnHLDir := '';
   {Attribute Colors}
   Self.FCommentAttriColor := clRed;
   Self.FKeyAttriColor := clBlue;
@@ -131,15 +138,16 @@ begin
   Self.FPascal := TSynPasSyn.Create(Self);
   Self.FPHP    := TSynPHPSyn.Create(Self);
   Self.FPython := TSynPythonSyn.Create(Self);
+  Self.FR      := TSynFacilSyn.Create(Self);
   Self.FRuby   := TSynRubySyn.Create(Self);
   Self.FSQL    := TSynSQLSyn.Create(Self);
   Self.FXML    := TSynXMLSyn.Create(Self);
   {Lang}
   Self.vLangTxt := '|Batch|COBOL|C#|CSS|HTML|INI|Java|JavaScript|JSON|Pascal|'
-    + 'PHP|Python|Ruby|SQL|XML'
+    + 'PHP|Python|R|Ruby|SQL|XML'
   ;
   Self.vLangResWordFile := 'none|batch|cobol|cs|css|html|ini|java|javascript|json|pascal'
-    + '|php|python|ruby|sql|xml'
+    + '|php|python|r|ruby|sql|xml'
   ;
   Self.vLangs := vacString.fcSplit(string(Self.vLangResWordFile),Char('|'));
   Self.vReservedWords := TStringList.Create;
@@ -159,6 +167,13 @@ begin
   Self.fcSetColor(Self.FRuby);
   Self.fcSetColor(Self.FSQL);
   Self.fcSetColor(Self.FXML);
+  {Default Filter for TSynFacilSyn}
+  Self.FR.DefaultFilter := 'R Files (*.R)|*.R';
+end;
+
+procedure TAceCustomSynHighlighter.fcInit (AResWordDir : string);
+begin
+  Self.fcReserveWords(AResWordDir);
 end;
 
 function TAceCustomSynHighlighter.GetLang : TAceShLang;
@@ -183,10 +198,14 @@ begin
     aceShLangPascal : Self.FHighlighter := Self.FPascal;
     aceShLangPHP    : Self.FHighlighter := Self.FPHP;
     aceShLangPython : Self.FHighlighter := Self.FPython;
+    aceShLangR      : Self.FHighlighter := Self.FR;
     aceShLangRuby   : Self.FHighlighter := Self.FRuby;
     aceShLangSQL    : Self.FHighlighter := Self.FSQL;
     aceShLangXML    : Self.FHighlighter := Self.FXML;
   end;
+  {Only for descendants of TSynFacilSyn}
+  Self.FR.LoadFromFile(Self.vAddOnHLDir + 'r.xml');
+  Self.fcSetColorFacil(Self.FR);
 end;
 
 procedure TAceCustomSynHighlighter.fcReserveWords (ADir : string);
@@ -221,6 +240,7 @@ begin
     + '|' + Self.FPascal.DefaultFilter
     + '|' + Self.FPHP.DefaultFilter
     + '|' + Self.FPython.DefaultFilter
+    + '|' + Self.FR.DefaultFilter
     + '|' + Self.FRuby.DefaultFilter
     + '|' + Self.FSQL.DefaultFilter
     + '|' + Self.FXML.DefaultFilter
@@ -249,6 +269,7 @@ begin
     else if vacFileDir.fcIsExt(AValue,Self.FPascal.DefaultFilter) then LLang := aceShLangPascal
     else if vacFileDir.fcIsExt(AValue,Self.FPHP.DefaultFilter) then LLang := aceShLangPHP
     else if vacFileDir.fcIsExt(AValue,Self.FPython.DefaultFilter) then LLang := aceShLangPython
+    else if vacFileDir.fcIsExt(AValue,Self.FR.DefaultFilter) then LLang := aceShLangR
     else if vacFileDir.fcIsExt(AValue,Self.FRuby.DefaultFilter) then LLang := aceShLangRuby
     else if vacFileDir.fcIsExt(AValue,Self.FSQL.DefaultFilter) then LLang := aceShLangSQL
     else if vacFileDir.fcIsExt(AValue,Self.FXML.DefaultFilter) then LLang := aceShLangXML
@@ -268,6 +289,14 @@ procedure TAceCustomSynHighlighter.fcSetColor (ALang : TSynCustomHighlighter; AC
 begin
   if AComment then ALang.CommentAttribute.Foreground := Self.FCommentAttriColor;
   ALang.KeywordAttribute.Foreground := Self.FKeyAttriColor;
+end;
+
+procedure TAceCustomSynHighlighter.fcSetColorFacil (ALang : TSynFacilSyn);
+begin
+  ALang.tkKeyword.Foreground := clBlue;
+  ALang.tkKeyword.Style := [fsBold];
+  ALang.tkComment.Foreground := clRed;
+  ALang.tkComment.Style := [fsItalic];
 end;
 
 end.
