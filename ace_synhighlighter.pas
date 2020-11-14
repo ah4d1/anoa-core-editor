@@ -303,7 +303,7 @@ end;
 
 procedure TAceCustomSynHighlighter._ThemeNormal;
 begin
-  ShowMessage('TEST');
+  //
 end;
 
 procedure TAceCustomSynHighlighter._ThemeDark;
