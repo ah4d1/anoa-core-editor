@@ -17,6 +17,7 @@ DEPENDENCIES :
 - LCLBase Package.
 - SynEdit Package.
 - ExtraHighlighters Package, see ExtraSyn at https://github.com/mriscoc/extrasyn
+- SynFacilSyn, see https://github.com/t-edson/SynFacilSyn
 - AnoaCore Package, see https://github.com/ah4d1/anoa-core
 
 
