@@ -15,6 +15,7 @@ uses
   SynHighlighterRuby, SynHighlighterSQL, SynHighlighterXML;
 
 type
+  TAceShTheme = (aceShThemeNormal,aceShThemeDark);
   TAceShLang = (aceShLangNone,aceShLangBatch,aceShLangCobol,aceShLangCSharp,aceShLangCSS,
     aceShLangHTML,aceShLangIni,aceShLangJava,aceShLangJavaScript,aceShLangJSON,aceShLangPascal,
     aceShLangPHP,aceShLangPython,aceShLangR,aceShLangRuby,aceShLangSQL,aceShLangXML
@@ -52,6 +53,8 @@ type
     FExt : string;
     {Highlighter}
     FHighlighter : TSynCustomHighlighter;
+    {Theme}
+    FTheme : TAceShTheme;
     {Lang}
     function GetLang : TAceShLang;
     procedure SetLang (AValue : TAceShLang);
@@ -60,6 +63,11 @@ type
     {Ext}
     function GetExt : string;
     procedure SetExt (AValue : string);
+    {Theme}
+    procedure _ThemeNormal;
+    procedure _ThemeDark;
+    function GetTheme : TAceShTheme;
+    procedure SetTheme (AValue : TAceShTheme);
     {Set Color}
     procedure fcSetColor (ALang : TSynCustomHighlighter);
     procedure fcSetColor (ALang : TSynCustomHighlighter; AComment : Boolean);
@@ -97,6 +105,7 @@ type
     property vDefaultFilter : WideString read GetDefaultFilter;
     property vExt : string read GetExt write SetExt;
     property vHighlighter : TSynCustomHighlighter read FHighlighter;
+    property vTheme : TAceShTheme read GetTheme write SetTheme default aceShThemeNormal;
     constructor Create (AOwner: TComponent); override;
     procedure fcInit (AResWordDir : string);
   end;
@@ -275,6 +284,31 @@ begin
     else if vacFileDir.fcIsExt(AValue,Self.FXML.DefaultFilter) then LLang := aceShLangXML
   ;
   Self.FLang := LLang;
+end;
+
+function TAceCustomSynHighlighter.GetTheme : TAceShTheme;
+begin
+  Result := Self.FTheme;
+end;
+
+procedure TAceCustomSynHighlighter.SetTheme (AValue : TAceShTheme);
+begin
+  Self.FTheme := AValue;
+  if Self.FTheme = aceShThemeNormal then
+    Self._ThemeNormal
+  else
+    Self._ThemeDark
+  ;
+end;
+
+procedure TAceCustomSynHighlighter._ThemeNormal;
+begin
+  ShowMessage('TEST');
+end;
+
+procedure TAceCustomSynHighlighter._ThemeDark;
+begin
+  //
 end;
 
 procedure TAceCustomSynHighlighter.fcSetColor (ALang : TSynCustomHighlighter);
