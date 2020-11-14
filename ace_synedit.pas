@@ -11,7 +11,6 @@ uses
   Classes, SysUtils, SynEdit, Graphics, ace_synhighlighter;
 
 type
-  TAceSeTheme = (aceSeThemeNormal,aceSeThemeDark);
   TAceCustomSynEdit = class(TSynEdit)
   private
     FSynEditColor : TColor;
@@ -22,16 +21,16 @@ type
     FCommentAttriColor : TColor;
     FKeyAttriColor : TColor;
     FSynHighlighter : TAceSynHighlighter;
-    FTheme : TAceSeTheme;
+    FTheme : TAceShTheme;
     procedure SetSynHighlighter (AValue : TAceSynHighlighter);
-    function GetTheme : TAceSeTheme;
-    procedure SetTheme (AValue : TAceSeTheme);
+    function GetTheme : TAceShTheme;
+    procedure SetTheme (AValue : TAceShTheme);
     procedure _DefaultColor;
     procedure _ThemeNormal;
     procedure _ThemeDark;
   public
     property vSynHighlighter : TAceSynHighlighter read FSynHighlighter write SetSynHighlighter;
-    property vTheme : TAceSeTheme read GetTheme write SetTheme default aceSeThemeNormal;
+    property vTheme : TAceShTheme read GetTheme write SetTheme default aceShThemeNormal;
     constructor Create (AOwner: TComponent); override;
     procedure fcUndo;
     procedure fcRedo;
@@ -73,19 +72,20 @@ begin
   // Self.Highlighter := Self.FSynHighlighter.vHighlighter;
 end;
 
-function TAceCustomSynEdit.GetTheme : TAceSeTheme;
+function TAceCustomSynEdit.GetTheme : TAceShTheme;
 begin
   Result := Self.FTheme;
 end;
 
-procedure TAceCustomSynEdit.SetTheme (AValue : TAceSeTheme);
+procedure TAceCustomSynEdit.SetTheme (AValue : TAceShTheme);
 begin
   Self.FTheme := AValue;
-  if Self.FTheme = aceSeThemeNormal then
+  if Self.vTheme = aceShThemeNormal then
     Self._ThemeNormal
   else
     Self._ThemeDark
   ;
+  // Self.vSynHighlighter.vTheme := Self.vTheme; // ERROR HERE
 end;
 
 procedure TAceCustomSynEdit._DefaultColor;
