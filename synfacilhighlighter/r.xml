@@ -1,0 +1,25 @@
+<Language name="R" ext="R">
+  <String Start="&quot;" End="&quot;" > </String>
+  <Comment Start="#" > </Comment>
+  <Keyword>
+break
+else
+FALSE
+for
+function
+if
+Inf
+NA
+NA_character_
+NA_complex_
+NA_integer_
+NA_real_
+NaN
+next
+NULL
+repeat
+TRUE
+while
+  </Keyword>
+</Language>
+
