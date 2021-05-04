@@ -12,7 +12,7 @@
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="3">
+    <Files Count="4">
       <Item1>
         <Filename Value="ace_synedit.pas"/>
         <HasRegisterProc Value="True"/>
@@ -27,23 +27,30 @@
         <Filename Value="synfacilsyn\SynFacilHighlighter.pas"/>
         <UnitName Value="SynFacilHighlighter"/>
       </Item3>
+      <Item4>
+        <Filename Value="ace_atsynedit.pas"/>
+        <UnitName Value="ace_atsynedit"/>
+      </Item4>
     </Files>
-    <RequiredPkgs Count="5">
+    <RequiredPkgs Count="6">
       <Item1>
-        <PackageName Value="ExtraHighlighters"/>
+        <PackageName Value="atsynedit_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="pkg_anoacore"/>
+        <PackageName Value="ExtraHighlighters"/>
       </Item2>
       <Item3>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="pkg_anoacore"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCLBase"/>
+        <PackageName Value="SynEdit"/>
       </Item4>
       <Item5>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCLBase"/>
       </Item5>
+      <Item6>
+        <PackageName Value="FCL"/>
+      </Item6>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>
