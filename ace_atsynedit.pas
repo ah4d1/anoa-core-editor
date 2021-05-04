@@ -8,7 +8,7 @@ unit ace_atsynedit;
 interface
 
 uses
-  Classes, SysUtils, SynEdit, Graphics, ace_synhighlighter;
+  Classes, SysUtils, SynEdit, Graphics, atsynedit, ace_synhighlighter;
 
 type
   TAceCustomATSynEdit = class(TATSynEdit)
@@ -103,9 +103,9 @@ procedure TAceCustomATSynEdit._ThemeNormal;
 begin
   Self.Color := Self.FSynEditColor;
   Self.Font.Color := Self.FSynEditFontColor;
-  Self.Gutter.Color := Self.FGutterColor;
-  Self.Gutter.Parts[1].MarkupInfo.Background := Self.FGutterMarkupColor;
-  Self.LineHighlightColor.Background := Self.FLineHighlightColor;
+  // Self.Gutter.Color := Self.FGutterColor;
+  // Self.Gutter.Parts[1].MarkupInfo.Background := Self.FGutterMarkupColor;
+  // Self.LineHighlightColor.Background := Self.FLineHighlightColor;
   Self.FCommentAttriColor := Self.FCommentAttriColor;
   Self.FKeyAttriColor := Self.FKeyAttriColor;
 end;
@@ -114,41 +114,41 @@ procedure TAceCustomATSynEdit._ThemeDark;
 begin
   Self.Color := vacColor.fcInvert(Self.FSynEditColor);
   Self.Font.Color := vacColor.fcInvert(Self.FSynEditFontColor);
-  Self.Gutter.Color := vacColor.fcInvert(Self.FGutterColor);
-  Self.Gutter.Parts[1].MarkupInfo.Background := vacColor.fcInvert(Self.FGutterMarkupColor);
-  Self.LineHighlightColor.Background := vacColor.fcInvert(Self.FLineHighlightColor);
+  // Self.Gutter.Color := vacColor.fcInvert(Self.FGutterColor);
+  // Self.Gutter.Parts[1].MarkupInfo.Background := vacColor.fcInvert(Self.FGutterMarkupColor);
+  // Self.LineHighlightColor.Background := vacColor.fcInvert(Self.FLineHighlightColor);
   Self.FCommentAttriColor := vacColor.fcInvert(Self.FCommentAttriColor);
   Self.FKeyAttriColor := vacColor.fcInvert(Self.FKeyAttriColor);
 end;
 
 procedure TAceCustomATSynEdit.fcUndo;
 begin
-  Self.Undo;
+  // Self.Undo;
 end;
 
 procedure TAceCustomATSynEdit.fcRedo;
 begin
-  Self.Redo;
+  // Self.Redo;
 end;
 
 procedure TAceCustomATSynEdit.fcCopy;
 begin
-  Self.CopyToClipboard;
+  // Self.CopyToClipboard;
 end;
 
 procedure TAceCustomATSynEdit.fcCut;
 begin
-  Self.CutToClipboard;
+  // Self.CutToClipboard;
 end;
 
 procedure TAceCustomATSynEdit.fcPaste;
 begin
-  Self.PasteFromClipboard;
+  // Self.PasteFromClipboard;
 end;
 
 procedure TAceCustomATSynEdit.fcSelectAll;
 begin
-  Self.SelectAll;
+  // Self.SelectAll;
 end;
 
 end.
