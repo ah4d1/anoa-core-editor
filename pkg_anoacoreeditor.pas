@@ -8,7 +8,8 @@ unit pkg_anoacoreeditor;
 interface
 
 uses
-  ace_synedit, ace_synhighlighter, SynFacilHighlighter, LazarusPackageIntf;
+  ace_synedit, ace_synhighlighter, SynFacilHighlighter, ace_atsynedit, 
+  LazarusPackageIntf;
 
 implementation
 
